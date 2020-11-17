@@ -22,12 +22,22 @@
 
 #include <Servo.h>
 
+// where the white / orange wire goes
 #define SERVO_PIN 9
+
+// red wire --> +5V
+// black wire --> GND
+
 #define CLOCK 20
 #define INTER_TRIAL 1000
 
 #define START 130
 #define STOP 142
+
+//#define ENABLE_0Hz1
+//#define ENABLE_0Hz4
+//#define ENABLE_1Hz
+//#define ENABLE_12Hz
 
 Servo servo;
 
@@ -44,12 +54,18 @@ void loop() {
   if (Serial.available()) {
     int c = Serial.read();
     if (c > 0) {
+      #ifdef ENABLE_0Hz1
       run_with_settings(START, STOP, 1, 5, 300); // 0.139 Hz
       delay(INTER_TRIAL);
+      #endif
+      #ifdef ENABLE_0Hz4
       run_with_settings(START, STOP, 1, 5, 100); // 0.417 Hz
       delay(INTER_TRIAL);
+      #endif
+      #ifdef ENABLE_1Hz
       run_with_settings(START, STOP, 1, 5, 40); // 1.04 Hz
       delay(INTER_TRIAL);
+      #endif
       run_with_settings(START, STOP, 1, 10, 20); // 2.08 Hz
       delay(INTER_TRIAL);
       run_with_settings(START, STOP, 2, 20, 20); // 4.17 Hz
@@ -58,10 +74,12 @@ void loop() {
       delay(INTER_TRIAL);
       run_with_settings(START, STOP, 4, 40, 20); // 8.33 Hz
       delay(INTER_TRIAL);
+      #ifdef ENABLE_12Hz
       run_with_settings(START, STOP, 6, 40, 20); // 12.5 Hz
       delay(INTER_TRIAL);
       run_with_settings(START, STOP, 6, 40, 20); // 12.5 Hz
       delay(INTER_TRIAL);
+      #endif
       run_with_settings(START, STOP, 4, 40, 20); // 8.33 Hz
       delay(INTER_TRIAL);
       run_with_settings(START, STOP, 3, 20, 20); // 6.25 Hz
@@ -69,12 +87,18 @@ void loop() {
       run_with_settings(START, STOP, 2, 20, 20); // 4.17 Hz
       delay(INTER_TRIAL);
       run_with_settings(START, STOP, 1, 10, 20); // 2.08 Hz
+      #ifdef ENABLE_1Hz
       delay(INTER_TRIAL);
       run_with_settings(START, STOP, 1, 5, 40); // 1.04 Hz
+      #endif
+      #ifdef ENABLE_0Hz4
       delay(INTER_TRIAL);
       run_with_settings(START, STOP, 1, 5, 100); // 0.417 Hz
+      #endif
+      #ifdef ENABLE_0Hz1
       delay(INTER_TRIAL);
       run_with_settings(START, STOP, 1, 5, 300); // 0.139 Hz
+      #endif
     }
     Serial.println(".");
   }
